@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="../dist/output.css" rel="stylesheet">
+  <script type="module" async src="./ess.js"></script>
+</head>
+
+<body>
+
+
+  <section class="max-w-5xl mx-auto my-8 grid grid-cols-1 place-items-stretch">
+    <h1 class="text-4xl font-bold text-center">Epworth Sleepiness Scale</h1>
+
+    <p class="alert shadow-lg italic hover:not-italic my-8 max-w-2xl">
+      The following questions refer to your usual way of life in recent times. Even if you have not done some of these activities recently, try to work out how they would have affected you and choose the column which most appropriately describes your chance of dozing.<br><br>
+      How likely are you to doze off or fall asleep, in contrast to just feeling tired?
+    </p>
+
+
+    <div id="main" class="m-8">
+
+    </div>
+    <div class="pagination flex place-content-center m-4 space-x-4">
+      <a class="btn hidden" id="prev">Previous</a>
+      <a class="btn" id="next">Continue</a>
+      <button class="btn btn-submit hidden" id="submit">Submit</button>
+    </div>
+    <div id="result" class="hidden">
+      <p class="alert shadow-lg italic hover:not-italic my-8 max-w-2xl">
+        Your score is <span id="score"></span>
+      </p>
+    </div>
+  </section>
+
+</html>
