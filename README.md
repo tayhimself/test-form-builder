@@ -16,3 +16,13 @@ https://codepen.io/phusum/pen/VQrQqy
 
 For template strings :
 https://wesbos.com/template-strings-html
+
+To build tailwindcss :
+
+    pnpx tailwindcss -i ./src/main.css -o ./dist/output.css --content ./index.html --watch
+
+To optimize tailwindcss :
+
+    pnpx tailwindcss -i ./src/main.css -o ./dist/output.css --minify
+
+Run the project on local server at /src/ess

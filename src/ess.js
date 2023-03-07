@@ -8,7 +8,9 @@ let questions = Array.from(data.questions)
 questions.forEach((question, i) => {
   let markup = `
   <div class="question ${i > 0 ? `hidden`:``}">
-  <label class="text-semibold text-xl text-left min-w-full">Situation: ${question.text}</label>
+  <label class="text-semibold text-xl text-left min-w-full">
+  <p class="mb-2">How likely are you to doze off or fall asleep, in contrast to just feeling tired?</p>
+  Situation: ${question.text}</label>
 
   <ul class="grid grid-cols-1 gap-y-5 m-5 mx-auto w-1/2 ">
   ${question.options
