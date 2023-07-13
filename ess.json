@@ -1,6 +1,7 @@
 {
   "id": "ess",
-  "title": "Epworth Sleepiness Scale",
+  "title": "Sleep Disorder Screening",
+  "name": "Epworth Sleepiness Scale",
   "description": "The Epworth Sleepiness Scale (ESS) is a 7-item questionnaire that measures the tendency to fall asleep during the day. The ESS is a validated and reliable instrument that has been used in a variety of clinical and research settings. The ESS is a self-report questionnaire that takes approximately 1 minute to complete. The ESS is scored by summing the responses to the 7 items. The ESS has been shown to be a valid and reliable measure of daytime sleepiness.",
   "instructions": "Please answer the following questions by selecting the appropriate response.",
   "questions": [

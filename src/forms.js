@@ -38,9 +38,11 @@ export const listeners = function (form) {
     // Hide current tab
     tabPanels[currentStep].classList.add("hidden")
     tabTargets[currentStep].classList.remove("active")
-    // Show next tab
-    tabPanels[currentStep + 1].classList.remove("hidden")
-    tabTargets[currentStep + 1].classList.add("active")
+    // Show next tab if it exists. This handles the case for the last step when submit button is clicked, but we are calling nextButton.click() to go to the next step in the event listener function for the input elements to advance to the next page after 2 seconds when the user selects an answer
+    if (currentStep < tabTargets.length - 1) {
+      tabPanels[currentStep + 1].classList.remove("hidden")
+      tabTargets[currentStep + 1].classList.add("active")
+    }
     currentStep += 1
     updateStatusDisplay("next")
   })
@@ -60,6 +62,7 @@ export const listeners = function (form) {
   })
 
   function updateStatusDisplay(button = "") {
+    //console.log("currentStep: ", currentStep, "tabTargets.length: ", tabTargets.length)
     if (currentStep == 0) {
       // If it's the first step, hide the previous button
       nextButton.classList.remove("hidden")
@@ -79,7 +82,7 @@ export const listeners = function (form) {
       // check if we are dependent on any previous answers using data attributes (dataset)
       do {
         let dependent = tabTargets[currentStep].dataset
-        console.log("dependent: ", dependent)
+        //console.log("dependent: ", dependent, "currentStep: ", currentStep)
         if (dependent.depends && dependent.dependsValue) {
           let dependentAnswers = document.querySelectorAll("input[name='" + dependent.depends + "']:checked")
           if (dependentAnswers.length > 0) {
@@ -127,6 +130,7 @@ export const listeners = function (form) {
   }
 
   function showResults() {
+    console.log("showResults")
     // Hide the form
     form.classList.add("hidden")
     document.querySelector("div.pagination").classList.add("hidden")

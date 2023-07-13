@@ -1,4 +1,4 @@
-import { listeners } from "./forms"
+import { listeners } from "./forms.js"
 
 let response = await fetch("../ess.json")
 let data = await response.json()
@@ -15,11 +15,25 @@ titleEls.forEach(el => {
 questions.forEach((question, i) => {
   let markup = `
   <div class="question ${i > 0 ? `hidden` : ``}">
+  <!-- Eight point scale -->
+  <p class="alert shadow-lg italic hover:not-italic mt-8 mb-4 mx-auto">
+  The following questions refer to your usual way of life in recent times. Even if you have not done some of these activities recently, try to work out how they would have affected you and choose the column which most appropriately describes your chance of dozing.
+</p>
+  <progress class="progress progress-primary w-full my-4" value=${i} max="8"></progress>
   <label class="text-semibold text-xl text-left min-w-full">
   <p class="mb-2">How likely are you to doze off or fall asleep, in contrast to just feeling tired?</p>
-  Situation: ${question.text}</label>
+  <p class="flex items-center">
+    <span class="relative flex h-3 w-3 mr-1">
+      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
+      <span class="relative inline-flex rounded-full h-3 w-3 bg-accent"></span>
+    </span>
+    <span class="animate-in fade-in delay-400">
+      Situation: ${question.text}
+    </span>
+  </p>
+  </label>
 
-  <ul class="grid grid-cols-1 gap-y-5 m-5 mx-auto w-1/2 ">
+  <ul class="grid grid-cols-1 gap-y-5 m-5 mx-auto w-4/5 md:w-1/2">
   ${question.options
     .map(
       (option, idx) => `
