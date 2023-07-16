@@ -1,6 +1,7 @@
 // forms.js
 // Common form functions currently used in OSA and ESS exported as an IIFE
 //
+
 export const listeners = function (form) {
   const previousButton = document.querySelector("#prev")
   const nextButton = document.querySelector("#next")
@@ -94,9 +95,14 @@ export const listeners = function (form) {
               tabTargets[currentStep].classList.remove("active")
               // Show next tab
               if (button === "next") {
-                tabPanels[currentStep + 1].classList.remove("hidden")
-                tabTargets[currentStep + 1].classList.add("active")
-                currentStep += 1
+                if (currentStep < tabTargets.length - 1) {
+                  tabPanels[currentStep + 1].classList.remove("hidden")
+                  tabTargets[currentStep + 1].classList.add("active")
+                  currentStep += 1
+                } else {
+                  showResults()
+                  break
+                }
               } else if (button === "previous") {
                 tabPanels[currentStep - 1].classList.remove("hidden")
                 tabTargets[currentStep - 1].classList.add("active")
@@ -124,13 +130,14 @@ export const listeners = function (form) {
     }
   }
 
-  function calculateScore() {
-    let score = 0
-    let answers = document.querySelectorAll("input:checked")
-    answers.forEach((answer) => {
-      score += parseInt(answer.value)
-    })
-    return score
+  function validateEntry() {
+  }
+
+  function saveFormDataToCookie() {
+    let formData = new FormData(form)
+    const formDataObj = Object.fromEntries(formData.entries())
+    const formDataJson = JSON.stringify(formDataObj);
+    document.cookie = `formData=${encodeURIComponent(formDataJson)}`;
   }
 
   function showResults() {
@@ -141,7 +148,7 @@ export const listeners = function (form) {
     // Show the results
     resultPanel.classList.remove("hidden")
     // Calculate the score
-    let score = calculateScore()
+    let score = saveFormDataToCookie()
     // Display the score
     resultPanel.querySelector("span").innerHTML = score
   }
