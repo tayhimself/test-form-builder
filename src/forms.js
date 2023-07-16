@@ -12,7 +12,7 @@ export const listeners = function (form) {
   const isEmpty = (str) => !str.trim().length
   let currentStep = 0
 
-  // Add an event listener to the input elements that goes to the next page after 2 seconds when the user selects an answer
+  // Add an event listener to the input elements that goes to the next page after 1.2 seconds when the user selects an answer
 
   let inputs = document.querySelectorAll("input[type='radio']")
   inputs.forEach((input) => {
@@ -62,17 +62,13 @@ export const listeners = function (form) {
   })
 
   function updateStatusDisplay(button = "") {
+
     //console.log("currentStep: ", currentStep, "tabTargets.length: ", tabTargets.length)
     if (currentStep == 0) {
       // If it's the first step, hide the previous button
       nextButton.classList.remove("hidden")
       previousButton.classList.add("hidden")
       submitButton.classList.add("hidden")
-    } else if (currentStep === tabTargets.length - 1) {
-      // If it's the last step, hide the next button and show submit
-      nextButton.classList.add("hidden")
-      previousButton.classList.remove("hidden")
-      submitButton.classList.remove("hidden")
     } else if (currentStep === tabTargets.length) {
       nextButton.classList.add("hidden")
       //validateEntry()
@@ -82,11 +78,12 @@ export const listeners = function (form) {
       // check if we are dependent on any previous answers using data attributes (dataset)
       do {
         let dependent = tabTargets[currentStep].dataset
-        //console.log("dependent: ", dependent, "currentStep: ", currentStep)
+        console.log("dependent: ", dependent, "currentStep: ", currentStep)
         if (dependent.depends && dependent.dependsValue) {
           let dependentAnswers = document.querySelectorAll("input[name='" + dependent.depends + "']:checked")
+          //console.log("dependentAnswers: ", dependentAnswers, "dependentAnswers.value: ", dependentAnswers[0].value)
           if (dependentAnswers.length > 0) {
-            // we have a dependent answer
+            // we have a dependent answer, we need to loop over this, but for now let's just check the first one TODO: loop over all the dependent answers
             if (dependentAnswers[0].value !== dependent.dependsValue) {
               // the answer is not the one we are looking for so skip this question
               nextButton.classList.remove("hidden")
@@ -110,13 +107,20 @@ export const listeners = function (form) {
             }
           }
         } else {
-          //exit the while loop
+          //exit the while loop if we don't have any more dependent answers
           break
         }
       } while (currentStep < tabTargets.length - 1 && currentStep > 0)
-      nextButton.classList.remove("hidden")
+
       previousButton.classList.remove("hidden")
-      submitButton.classList.add("hidden")
+      if (currentStep === tabTargets.length - 1) {
+        // If it's the last step, hide the next button and show submit
+        nextButton.classList.add("hidden")
+        submitButton.classList.remove("hidden")
+      } else {
+        nextButton.classList.remove("hidden")
+        submitButton.classList.add("hidden")
+      }
     }
   }
 
