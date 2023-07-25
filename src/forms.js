@@ -2,7 +2,7 @@
 // Common form functions currently used in OSA and ESS exported as an IIFE
 //
 
-export const listeners = function (form) {
+export const listeners = function (form, questions) {
   const previousButton = document.querySelector("#prev")
   const nextButton = document.querySelector("#next")
   const submitButton = document.querySelector("#submit")
@@ -63,7 +63,6 @@ export const listeners = function (form) {
   })
 
   function updateStatusDisplay(button = "") {
-
     //console.log("currentStep: ", currentStep, "tabTargets.length: ", tabTargets.length)
     if (currentStep == 0) {
       // If it's the first step, hide the previous button
@@ -78,42 +77,29 @@ export const listeners = function (form) {
       // In all other instances, display both next and previous buttons
       // check if we are dependent on any previous answers using data attributes (dataset)
       do {
-        let dependent = tabTargets[currentStep].dataset
-        console.log("dependent: ", dependent, "currentStep: ", currentStep)
-        if (dependent.depends && dependent.dependsValue) {
-          let dependentAnswers = document.querySelectorAll("input[name='" + dependent.depends + "']:checked")
-          //console.log("dependentAnswers: ", dependentAnswers, "dependentAnswers.value: ", dependentAnswers[0].value)
-          if (dependentAnswers.length > 0) {
-            // we have a dependent answer, we need to loop over this, but for now let's just check the first one TODO: loop over all the dependent answers
-            if (dependentAnswers[0].value !== dependent.dependsValue) {
-              // the answer is not the one we are looking for so skip this question
-              nextButton.classList.remove("hidden")
-              previousButton.classList.remove("hidden")
-              submitButton.classList.add("hidden")
-              // Hide current tab
-              tabPanels[currentStep].classList.add("hidden")
-              tabTargets[currentStep].classList.remove("active")
-              // Show next tab
-              if (button === "next") {
-                if (currentStep < tabTargets.length - 1) {
-                  tabPanels[currentStep + 1].classList.remove("hidden")
-                  tabTargets[currentStep + 1].classList.add("active")
-                  currentStep += 1
-                } else {
-                  showResults()
-                  break
-                }
-              } else if (button === "previous") {
-                tabPanels[currentStep - 1].classList.remove("hidden")
-                tabTargets[currentStep - 1].classList.add("active")
-                currentStep -= 1
-              }
+        if (skipQuestion()) {
+          nextButton.classList.remove("hidden")
+          previousButton.classList.remove("hidden")
+          submitButton.classList.add("hidden")
+          // Hide current tab
+          tabPanels[currentStep].classList.add("hidden")
+          tabTargets[currentStep].classList.remove("active")
+          // Show next tab
+          if (button === "next") {
+            if (currentStep < tabTargets.length - 1) {
+              tabPanels[currentStep + 1].classList.remove("hidden")
+              tabTargets[currentStep + 1].classList.add("active")
+              currentStep += 1
             } else {
+              showResults()
               break
             }
+          } else if (button === "previous") {
+            tabPanels[currentStep - 1].classList.remove("hidden")
+            tabTargets[currentStep - 1].classList.add("active")
+            currentStep -= 1
           }
         } else {
-          //exit the while loop if we don't have any more dependent answers
           break
         }
       } while (currentStep < tabTargets.length - 1 && currentStep > 0)
@@ -130,14 +116,67 @@ export const listeners = function (form) {
     }
   }
 
-  function validateEntry() {
+  function skipQuestion() {
+    // get the current step
+    let currentStep = document.querySelector(".question.active")
+    // get the inputs for the current step
+    let inputs = currentStep.querySelectorAll("input")
+    // we need to check multiple inputs if there is a compound question, but so far the
+    let inputname = inputs[0].name
+    console.log("inputname: ", inputname)
+    let currentQ = questions.find((question) => question.id === inputname)
+    let skip = false
+    if (currentQ && currentQ.hasOwnProperty("depends")) {
+      // we have a question that depends on a previous answer
+      currentQ.depends.forEach((dep) => {
+        // check the rule if it exists. {or, and}
+        if (dep.rule) {
+          // we have a rule, so we need to check the rule
+          if (dep.rule === "or") {
+            skip = true
+            // we need to check if any of the dependent answers are true
+            dep.conditions.forEach((condition) => {
+              // get the dependent answers that are checked
+              let answer = document.querySelector("input[name='" + condition.question + "']:checked")
+              // TODO This assumes a radio button or checkbox, but we need to handle text inputs as well
+              if (answer && parseInt(answer.value) === condition.value) {
+                // we have a match, so we don't need to skip this question
+                console.log("answer: ", answer, "value:", answer.value, "condition: ", condition.value)
+                skip = false
+              }
+            })
+          } else if (dep.rule === "and") {
+            skip = false
+            dep.conditions.forEach((condition) => {
+              // get the dependent answers that are checked
+              let answer = document.querySelector("input[name='" + condition.question + "']:checked")
+              // TODO This assumes a radio button or checkbox, but we need to handle text inputs as well
+              if (answer && parseInt(answer.value) !== condition.value) {
+                skip = true
+                // no matches so skip this question
+              }
+            })
+          }
+        } else {
+          //single condition
+          // TODO only works for radio buttons and checkboxes, need to handle text inputs as well
+          let answer = document.querySelector("input[name='" + dep.question + "']:checked")
+          if (answer && parseInt(answer.value) !== dep.value) {
+            // we don't have a match, so we need to skip this question
+            console.log("answer: ", answer, "value:", answer.value, "condition: ", dep.value)
+            skip = true
+          }
+        }
+      })
+    }
+    return skip
   }
 
   function saveFormDataToCookie() {
     let formData = new FormData(form)
     const formDataObj = Object.fromEntries(formData.entries())
-    const formDataJson = JSON.stringify(formDataObj);
-    document.cookie = `formData=${encodeURIComponent(formDataJson)}`;
+    const formDataJson = JSON.stringify(formDataObj)
+    document.cookie = `formData=${encodeURIComponent(formDataJson)}`
   }
 
   function showResults() {

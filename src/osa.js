@@ -13,16 +13,8 @@ titleEls.forEach((el) => {
 })
 
 questions.forEach((question, i) => {
-  // check if data.depends exists and if so, add it to the markup
-  let dependency = ``
-  if (question.depends && question.depends.length > 0) {
-    question.depends.forEach(
-      (dep) => (dependency += `data-depends="${dep.question}" data-depends-value="${dep.value}"`)
-    )
-    console.log("dependency: ", dependency)
-  }
   let markup = `
-  <div class="question ${i > 0 ? `hidden` : ``}"  ${dependency}>
+  <div class="question ${i > 0 ? `hidden` : ``}">
   <label class="text-semibold text-xl text-left min-w-full">${question.text}</label>
   `
   if (question.type === "number") {
@@ -59,4 +51,4 @@ questions.forEach((question, i) => {
   form.innerHTML += markup
 })
 
-listeners(form)
+listeners(form, questions)

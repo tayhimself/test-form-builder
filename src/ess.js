@@ -50,4 +50,4 @@ questions.forEach((question, i) => {
 })
 
 
-listeners(form)
+listeners(form,questions)
