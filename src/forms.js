@@ -161,10 +161,15 @@ export const listeners = function (form, questions) {
           //single condition
           // TODO only works for radio buttons and checkboxes, need to handle text inputs as well
           let answer = document.querySelector("input[name='" + dep.question + "']:checked")
-          if (answer && parseInt(answer.value) !== dep.value) {
+          if (Object.keys(dep).includes("value") && answer && parseInt(answer.value) !== dep.value) {
             // we don't have a match, so we need to skip this question
-            console.log("answer: ", answer, "value:", answer.value, "condition: ", dep.value)
             skip = true
+          } else if (Object.keys(dep).includes("values")) {
+            // we can match multiple values
+            if (answer && !dep.values.includes(parseInt(answer.value))) {
+              // we don't have a match, so we need to skip this question
+              skip = true
+            }
           }
         }
       })
