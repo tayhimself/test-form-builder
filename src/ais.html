@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="../dist/output.css" rel="stylesheet">
+  <script type="module" async src="./ais.js"></script>
+  <title></title>
+</head>
+
+<body>
+
+  <section class="bg-accent py-4">
+    <h1 class="text-4xl font-bold text-center"></h1>
+  </section>
+
+  <section class="max-w-xl md:max-w-4xl mx-auto grid grid-cols-1 place-items-stretch">
+
+    <div id="main" class="m-8">
+
+    </div>
+
+    <div class="hidden ease-in-out transition delay-200" id="spinner">
+      <div class="flex place-content-center">
+        <div class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
+          <span class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">Loading...</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pagination flex place-content-center m-4 space-x-4 transition ease-in-out delay-200">
+      <a class="btn hidden" id="prev">Previous</a>
+      <a class="btn" id="next">Continue</a>
+      <button class="btn btn-submit hidden" id="submit">Submit</button>
+    </div>
+
+    <div id="result" class="hidden">
+      <p class="alert shadow-lg italic hover:not-italic my-8 max-w-2xl">
+        <span></span>Scoring is not complete yet. Please check back later.
+      </p>
+    </div>
+
+  </section>
+
+  <section class="md:max-w-4xl mx-auto grid grid-cols-1 place-items-stretch">
+    <ul class="steps my-4 md:mt-8 mx-auto ">
+      <li class="step step-primary">Sleepiness Scale</li>
+      <li class="step ">Obstructive Sleep Apnea</li>
+      <li class="step">Shift Work Disorder</li>
+      <li class="step">Restless Legs</li>
+      <li class="step">Insomnia</li>
+      <li class="step">Narcolepsy</li>
+    </ul>
+    <p class="text-sm max-w-4xl mx-auto">The screening is divided into five parts and will screen you for 5 different sleep disorders.</p>
+  </section>
+
+</html>
