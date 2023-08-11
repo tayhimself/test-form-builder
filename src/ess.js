@@ -3,6 +3,7 @@ import { listeners } from "./forms.js"
 let response = await fetch("../ess.json")
 let data = await response.json()
 let form = document.createElement("form")
+form.id="ess"
 document.getElementById("main").appendChild(form)
 let questions = Array.from(data.questions)
 

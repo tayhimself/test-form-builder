@@ -193,7 +193,43 @@ export const listeners = function (form, questions) {
     resultPanel.classList.remove("hidden")
     // Calculate the score
     let score = saveFormDataToCookie()
+    // send to api
+    sendFormDataToAPI(new FormData(form))
     // Display the score
     resultPanel.querySelector("span").innerHTML = score
+  }
+
+  async function sendFormDataToAPI(formData) {
+    const formDataObj = Object.fromEntries(formData.entries())
+    const formDataJson = JSON.stringify(formDataObj)
+    let success = false
+    let retry = 0
+    while (!success && retry < 4) {
+      try {
+        const response = await fetch("http://localhost:8000/"+form.id, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: formDataJson,
+        })
+        const data = await response.json()
+        if (response.ok && response.status >= 200 && response.status < 300) {
+          success = true
+          console.log("Success:", data)
+        } else {
+          setTimeout(() => {
+            console.log("retrying...")
+          }, 1000 * retry)
+          retry += 1
+        }
+      } catch (error) {
+        console.error("Error:", error)
+        setTimeout(() => {
+          console.log("retrying...")
+        }, 1000 * retry)
+        retry += 1
+      }
+    }
   }
 }
