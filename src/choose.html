@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="../dist/output.css" rel="stylesheet">
+  <title></title>
+</head>
+
+<body>
+
+  <section class="bg-accent py-4">
+    <h1 class="text-4xl font-bold text-center">Anonymous Sleep Disorder Screening</h1>
+  </section>
+  <section class="max-w-xl md:max-w-4xl mx-auto grid grid-cols-1 place-items-stretch">
+
+    <div id="main" class="m-8">
+      <h3 class="my-8 font-semibold text-xl mx-auto text-center">Select the sleep disorders you wish to screen</h3>
+      <p class="my-2">
+        We suggest that you select all sleep disorders for screening. If you are not sure, leave the sleep disorders selected as they will take less than a minute each on average.
+      </p>
+      <div class="mt-8 mb-4 flex flex-col place-content-center mx-auto">
+        <div class="flex flex-col place-content-center mx-auto" >
+          <div class="form-control w-72">
+            <label class="cursor-pointer label">
+              <span class="label-text text-lg text-gray-600">Obstructive Sleep Apnea</span>
+              <input type="checkbox" class="toggle toggle-success" checked />
+            </label>
+          </div>
+          <div class="form-control w-72">
+            <label class="cursor-pointer label">
+              <span class="label-text text-lg text-gray-600">Insomnia</span>
+              <input type="checkbox" class="toggle toggle-success" id="insomnia"  checked />
+            </label>
+          </div>
+          <div class="form-control w-72">
+            <label class="cursor-pointer label">
+              <span class="label-text text-lg text-gray-600">Shift Work Disorder</span>
+              <input type="checkbox" class="toggle toggle-success" id="swd" checked />
+            </label>
+          </div>
+          <div class="form-control w-72">
+            <label class="cursor-pointer label">
+              <span class="label-text text-lg text-gray-600">Restless Legs Syndrome</span>
+              <input type="checkbox" class="toggle toggle-success" id="rls" checked />
+            </label>
+          </div>
+          <div class="form-control w-72">
+            <label class="cursor-pointer label">
+              <span class="label-text text-lg text-gray-600">Narcolepsy</span>
+              <input type="checkbox" class="toggle toggle-success" id="narcolepsys" checked />
+            </label>
+          </div>
+        </div>
+        <div class="flex place-content-center m-4 my-8 space-x-4">
+          <button class="btn btn-success" id="">Continue</button>
+        </div>
+        <hr/>
+
+        <p class="my-2 font-light">
+          <strong>Important:</strong> This tool is not a substitute for a diagnosis from a healthcare professional. If you have any concerns about your sleep, talk with your healthcare provider.
+        </p>
+      </div>
+  </section>
+</body>
+
+</html>
