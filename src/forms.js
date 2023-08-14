@@ -102,7 +102,7 @@ export const listeners = function (form, questions) {
         } else {
           break
         }
-      } while (currentStep < tabTargets.length - 1 && currentStep > 0)
+      } while (currentStep < tabTargets.length && currentStep > 0)
 
       previousButton.classList.remove("hidden")
       if (currentStep === tabTargets.length - 1) {
@@ -184,6 +184,37 @@ export const listeners = function (form, questions) {
     document.cookie = `formData=${encodeURIComponent(formDataJson)}`
   }
 
+  function saveFormDataToSessionStorage() {
+    let formData = new FormData(form);
+    const formDataObj = Object.fromEntries(formData.entries());
+    let screenStoreData = JSON.parse(sessionStorage.getItem('screenStore'));
+    if (screenStoreData) {
+      screenStoreData.screenStore[form.id]['values'] = formDataObj;
+      screenStoreData.screenStore[form.id]['completed'] = true;
+      sessionStorage.setItem('screenStore', JSON.stringify(screenStoreData));
+    } else {
+      // TODO make a restart function to redirect to the start of the form
+    }
+  }
+
+  /**
+   * Must be run after saveFormDataToSessionStorage so that the current screen is marked as completed
+   * @returns the next screen to display
+   * NULL if there are no more screens to display
+   */
+  function getNextScreen() {
+    let screenStoreData = JSON.parse(sessionStorage.getItem('screenStore'));
+    if (screenStoreData) {
+      screenStoreData = screenStoreData.screenStore;
+      let nextScreen = Object.keys(screenStoreData).find(key => screenStoreData[key]['completed'] === false);
+      if (nextScreen) {
+        return screenStoreData[nextScreen]['route'];
+      }
+    } else {
+      // TODO make a restart function to redirect to the start of the form
+    }
+  }
+
   function showResults() {
     console.log("showResults")
     // Hide the form
@@ -193,8 +224,15 @@ export const listeners = function (form, questions) {
     resultPanel.classList.remove("hidden")
     // Calculate the score
     let score = saveFormDataToCookie()
+    score = saveFormDataToSessionStorage()
+    let next = getNextScreen()
+    if (next) {
+      window.location.href = next;
+    } else {
+      window.location.href = './results.html';
+    }
     // send to api
-    sendFormDataToAPI(new FormData(form))
+    // sendFormDataToAPI(new FormData(form))
     // Display the score
     resultPanel.querySelector("span").innerHTML = score
   }

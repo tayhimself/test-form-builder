@@ -21,17 +21,17 @@
         We suggest that you select all sleep disorders for screening. If you are not sure, leave the sleep disorders selected as they will take less than a minute each on average.
       </p>
       <div class="mt-8 mb-4 flex flex-col place-content-center mx-auto">
-        <div class="flex flex-col place-content-center mx-auto" >
+        <div class="flex flex-col place-content-center mx-auto">
           <div class="form-control w-72">
             <label class="cursor-pointer label">
               <span class="label-text text-lg text-gray-600">Obstructive Sleep Apnea</span>
-              <input type="checkbox" class="toggle toggle-success" checked />
+              <input type="checkbox" class="toggle toggle-success" id="osa" checked />
             </label>
           </div>
           <div class="form-control w-72">
             <label class="cursor-pointer label">
               <span class="label-text text-lg text-gray-600">Insomnia</span>
-              <input type="checkbox" class="toggle toggle-success" id="insomnia"  checked />
+              <input type="checkbox" class="toggle toggle-success" id="insomnia" checked />
             </label>
           </div>
           <div class="form-control w-72">
@@ -49,14 +49,15 @@
           <div class="form-control w-72">
             <label class="cursor-pointer label">
               <span class="label-text text-lg text-gray-600">Narcolepsy</span>
-              <input type="checkbox" class="toggle toggle-success" id="narcolepsys" checked />
+              <input type="checkbox" class="toggle toggle-success" id="narcolepsy" checked />
             </label>
           </div>
         </div>
         <div class="flex place-content-center m-4 my-8 space-x-4">
           <button class="btn btn-success" id="">Continue</button>
         </div>
-        <hr/>
+
+        <hr />
 
         <p class="my-2 font-light">
           <strong>Important:</strong> This tool is not a substitute for a diagnosis from a healthcare professional. If you have any concerns about your sleep, talk with your healthcare provider.
@@ -64,5 +65,56 @@
       </div>
   </section>
 </body>
+<script type="module">
+  document.querySelector('.btn-success').addEventListener('click', function () {
+
+    let disorders = {
+      'osa': document.querySelector('#osa').checked,
+      'insomnia': document.querySelector('#insomnia').checked,
+      'swd': document.querySelector('#swd').checked,
+      'rls': document.querySelector('#rls').checked,
+      'narcolepsy': document.querySelector('#narcolepsy').checked
+    }
+    let disordersToScreen = Object.entries(disorders).filter(([disorder, selected]) => {
+      if (selected) return true;
+    });
+    disordersToScreen.forEach(([disorder, selected],idx) => {
+      if (selected && disorder === 'narcolepsy') disordersToScreen[idx] = [ 'ess', selected];
+    });
+
+    let screenStore = {};
+    disordersToScreen.forEach(([disorder, selected]) => {
+      screenStore[disorder] = {};
+      screenStore[disorder].name = disorder;
+      screenStore[disorder].route = './' + disorder + '.html';
+      screenStore[disorder].completed = false;
+      screenStore[disorder].values = {};
+      screenStore[disorder].result = 'X';
+    });
+    /*
+      let screenStore = disordersToScreen.map(([disorder, selected]) => {
+        let store = {};
+        store.name = disorder;
+        store.route = './' + disorder + '.html';
+        store.completed = false;
+        store.values = {};
+        store.result = 'X';
+        return store;
+      });`
+    */
+
+    sessionStorage.setItem('screenStore', JSON.stringify({ screenStore }));
+    // if none of the variables are true, then alert the user to select at least one
+    if (Object.keys(disorders).length === 0) {
+      alert('Please select at least one sleep disorder to screen.');
+    } else {
+      //forward to the page that matches the first selected sleep disorder
+      window.location.href = Object.entries(screenStore)[0][1].route;
+
+    }
+
+  });
+
+</script>
 
 </html>
