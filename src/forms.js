@@ -8,7 +8,6 @@ export const listeners = function (form, questions) {
   const submitButton = document.querySelector("#submit")
   const tabTargets = document.querySelectorAll(".question")
   const tabPanels = document.querySelectorAll(".question")
-  const resultPanel = document.getElementById("result")
   const spinner = document.getElementById("spinner")
   const isEmpty = (str) => !str.trim().length
   let currentStep = 0
@@ -220,8 +219,6 @@ export const listeners = function (form, questions) {
     // Hide the form
     form.classList.add("hidden")
     document.querySelector("div.pagination").classList.add("hidden")
-    // Show the results
-    resultPanel.classList.remove("hidden")
     // Calculate the score
     let score = saveFormDataToCookie()
     score = saveFormDataToSessionStorage()
@@ -233,8 +230,6 @@ export const listeners = function (form, questions) {
     }
     // send to api
     // sendFormDataToAPI(new FormData(form))
-    // Display the score
-    resultPanel.querySelector("span").innerHTML = score
   }
 
   async function sendFormDataToAPI(formData) {
