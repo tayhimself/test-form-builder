@@ -31,7 +31,7 @@
           <div class="form-control w-72">
             <label class="cursor-pointer label">
               <span class="label-text text-lg text-gray-600">Insomnia</span>
-              <input type="checkbox" class="toggle toggle-success" id="insomnia" checked />
+              <input type="checkbox" class="toggle toggle-success" id="ais" checked />
             </label>
           </div>
           <div class="form-control w-72">
@@ -66,11 +66,12 @@
   </section>
 </body>
 <script type="module">
+  import { initializeScreener } from './init.js';
   document.querySelector('.btn-success').addEventListener('click', function () {
 
     let disorders = {
       'osa': document.querySelector('#osa').checked,
-      'insomnia': document.querySelector('#insomnia').checked,
+      'ais': document.querySelector('#ais').checked,
       'swd': document.querySelector('#swd').checked,
       'rls': document.querySelector('#rls').checked,
       'narcolepsy': document.querySelector('#narcolepsy').checked
@@ -78,30 +79,8 @@
     let disordersToScreen = Object.entries(disorders).filter(([disorder, selected]) => {
       if (selected) return true;
     });
-    disordersToScreen.forEach(([disorder, selected],idx) => {
-      if (selected && disorder === 'narcolepsy') disordersToScreen[idx] = [ 'ess', selected];
-    });
 
-    let screenStore = {};
-    disordersToScreen.forEach(([disorder, selected]) => {
-      screenStore[disorder] = {};
-      screenStore[disorder].name = disorder;
-      screenStore[disorder].route = './' + disorder + '.html';
-      screenStore[disorder].completed = false;
-      screenStore[disorder].values = {};
-      screenStore[disorder].result = 'X';
-    });
-    /*
-      let screenStore = disordersToScreen.map(([disorder, selected]) => {
-        let store = {};
-        store.name = disorder;
-        store.route = './' + disorder + '.html';
-        store.completed = false;
-        store.values = {};
-        store.result = 'X';
-        return store;
-      });`
-    */
+    let screenStore = initializeScreener(disordersToScreen);
 
     sessionStorage.setItem('screenStore', JSON.stringify({ screenStore }));
     // if none of the variables are true, then alert the user to select at least one
@@ -110,7 +89,6 @@
     } else {
       //forward to the page that matches the first selected sleep disorder
       window.location.href = Object.entries(screenStore)[0][1].route;
-
     }
 
   });

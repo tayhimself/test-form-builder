@@ -39,5 +39,24 @@
     </div>
   </section>
 </body>
+<script type="module">
+
+  import {
+    initializeScreener
+  } from './init.js';
+
+  let disordersToScreen = [
+    ['osa', true],
+    ['ais', true],
+    ['swd', true],
+    ['rls', true],
+    ['narcolepsy', true]
+  ];
+  document.querySelector('.btn-success').addEventListener('click', () => {
+    let screenStore = initializeScreener(disordersToScreen);
+    window.location.href = Object.entries(screenStore)[0][1].route;
+  });
+
+</script>
 
 </html>
