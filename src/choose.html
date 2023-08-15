@@ -48,8 +48,8 @@
           </div>
           <div class="form-control w-72">
             <label class="cursor-pointer label">
-              <span class="label-text text-lg text-gray-600">Narcolepsy</span>
-              <input type="checkbox" class="toggle toggle-success" id="narcolepsy" checked />
+              <span class="label-text text-lg text-gray-600">Hypersomnia</span>
+              <input type="checkbox" class="toggle toggle-success" id="hypersomnia" checked />
             </label>
           </div>
         </div>
@@ -74,7 +74,7 @@
       'ais': document.querySelector('#ais').checked,
       'swd': document.querySelector('#swd').checked,
       'rls': document.querySelector('#rls').checked,
-      'narcolepsy': document.querySelector('#narcolepsy').checked
+      'hypersomnia': document.querySelector('#hypersomnia').checked
     }
     let disordersToScreen = Object.entries(disorders).filter(([disorder, selected]) => {
       if (selected) return true;

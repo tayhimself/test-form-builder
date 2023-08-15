@@ -1,7 +1,7 @@
 export const initializeScreener = (disordersToScreen) => {
 
   disordersToScreen.forEach(([disorder, selected], idx) => {
-    if (selected && disorder === "narcolepsy") disordersToScreen[idx] = ["ess", selected]
+    if (selected && disorder === "hypersomnia") disordersToScreen[idx] = ["ess", selected]
   })
 
   let screenStore = {}
