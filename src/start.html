@@ -29,14 +29,20 @@
       <div class="flex place-content-center m-4 space-x-4">
         <button class="btn btn-success" id="">Start</button>
       </div>
-      <p class="my-2">
-        <strong>Important:</strong> This tool is not a substitute for a diagnosis from a healthcare professional. If you have any concerns about your sleep, talk with your healthcare provider.
-      </p>
+
+
       <p class="my-2">
 
         The screening is divided into five parts and will screen you for 5 different sleep disorders. <a href="./choose.html" class="link link-primary">Click here</a> if you want to choose specific sleep disorders to screen for, for example if you're curious about your risk for Sleep Apnea in particular.
       </p>
     </div>
+    <div class="mx-8 max-w-xl md:max-w-4xl">
+      <hr />
+      <p class="my-2">
+        <strong>Important:</strong> This tool is not a substitute for a diagnosis from a healthcare professional. If you have any concerns about your sleep, talk with your healthcare provider.
+      </p>
+    </div>
+
   </section>
 </body>
 <script type="module">
@@ -50,7 +56,7 @@
     ['ais', true],
     ['swd', true],
     ['rls', true],
-    ['narcolepsy', true]
+    ['hypersomnia', true]
   ];
   document.querySelector('.btn-success').addEventListener('click', () => {
     let screenStore = initializeScreener(disordersToScreen);

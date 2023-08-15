@@ -28,7 +28,7 @@ export const listeners = function (form, questions) {
         nextButton.click()
         spinner.classList.add("hidden")
         updateStatusDisplay()
-      }, 1200)
+      }, 1000)
     })
   })
 
