@@ -15,6 +15,8 @@ titleEls.forEach((el) => {
 questions.forEach((question, i) => {
   let markup = `
   <div class="question ${i > 0 ? `hidden` : ``}">
+  <progress class="progress progress-primary w-full mt--8 mb-4" value=${i} max=${questions.length}></progress>
+
   <label class="text-semibold text-xl text-left min-w-full">${question.text}</label>
   `
   if (question.type === "number") {
